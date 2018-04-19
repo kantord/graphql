@@ -1,5 +1,7 @@
 // @flow
-import { GraphQLObjectType, GraphQLString, GraphQLFloat } from 'graphql';
+import { GraphQLObjectType, GraphQLString } from 'graphql';
+
+import Coordinates from '../../../location/types/outputs/Coordinates';
 
 export type GeoIP = {|
   isoCountryCode: string,
@@ -14,13 +16,13 @@ const GeoIPType = new GraphQLObjectType({
       type: GraphQLString,
       description: 'ISO country code',
     },
-    latitude: {
-      type: GraphQLFloat,
-      description: 'Latitude',
-    },
-    longitude: {
-      type: GraphQLFloat,
-      description: 'Longitude',
+    coordinates: {
+      type: Coordinates,
+      description: 'Coordinates',
+      resolve: (res: GeoIP) => ({
+        lat: res.latitude,
+        lng: res.longitude,
+      }),
     },
   },
 });
