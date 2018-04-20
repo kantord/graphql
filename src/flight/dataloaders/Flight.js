@@ -147,6 +147,7 @@ export default class FlightDataloader {
     ]);
     parameters.flyFrom = flyFrom;
     parameters.to = flyTo;
+
     return get(config.restApiEndpoint.allFlights(parameters));
   }
 

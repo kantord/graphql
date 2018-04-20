@@ -13,6 +13,9 @@ import {
 import Schema from './Schema';
 import { createContext } from './common/services/GraphqlContext';
 import Logger from './common/services/Logger';
+import elastic from 'elasticsearch'
+import { flattenTree } from './common/trace/TraceEntry'
+import uuid from 'uuid/v4'
 import { ProxiedError } from './common/services/errors/ProxiedError';
 
 require('dotenv').config();
@@ -23,6 +26,8 @@ process.on('unhandledRejection', reason => {
 
 const app = express();
 app.use(cors({ methods: ['GET', 'POST'] }));
+
+const elastic_client = new elastic.Client({host: 'localhost:9200', log: 'trace'})
 
 app.use('/', (request: $Request, response: $Response) => {
   if (process.env.NODE_ENV === 'production' && request.method === 'GET') {
@@ -62,15 +67,34 @@ function createGraphqlServer(schema, context) {
         errorMessage += ` ${originalError.originUrl}`;
       }
 
-      Logger.error(errorMessage);
       return error;
     },
-    extensions: () => {
+    extensions: (req) => {
       const traceCollector = context._traceCollector;
       if (!traceCollector) return {};
       traceCollector.requestDidEnd();
+      const trace_data = formatTraceData(traceCollector)
+      console.log('?????????????????????????')
+      try {
+        const xxxx = flattenTree(req.document.definitions)
+      } catch (fuck) {
+        console.log('fuck', fuck)
+      }
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!')
+      console.log(xxxx)
+      elastic_client.create({
+        type: 'query',
+        index: 'asdsad',
+        id: uuid(),
+        body: {
+          'request': {
+            'definitions': xxxx,
+            'results': []
+          }
+        }
+      })
+      console.log('.........................')
       return {
-        tracing: formatTraceData(traceCollector),
       };
     },
   });
