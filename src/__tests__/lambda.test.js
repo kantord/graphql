@@ -11,6 +11,16 @@ afterEach(() => {
   jest.resetAllMocks();
 });
 
+jest.mock('elasticsearch', () => {
+  return {
+    'Client': function() {
+      return {
+        'create': jest.fn(() => null)
+      }
+    },
+  }
+})
+
 it('should return valid response', async () => {
   const response = await request(server)
     .post('/')

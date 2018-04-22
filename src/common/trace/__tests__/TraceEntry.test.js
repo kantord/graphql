@@ -43,6 +43,17 @@ const objTests = [
     ],
   },
   {
+    name: 'null and undefined values',
+    input: {
+      foo: undefined,
+      kaka: null
+    },
+    output: [
+      {name: 'foo', undefinedValue: true},
+      {name: 'kaka', nullValue: true},
+    ]
+  },
+  {
     name: 'parent/child with arrays',
     input: {
       fieldName2: {
@@ -105,6 +116,16 @@ const objTests = [
 ];
 
 const typeTests = [
+  {
+    name: 'undefined',
+    input: undefined,
+    output: { undefinedValue: true},
+  },
+  {
+    name: 'null',
+    input: null,
+    output: { nullValue: true},
+  },
   {
     name: 'integer',
     input: 55,
@@ -181,32 +202,3 @@ describe('flattenTree', () => {
     }),
   );
 });
-// it('should flatten tree hierarchy', () => {
-//   const entry = TraceEntry.flattenTree({
-//     fieldName: 'foo',
-//     whatever: {
-//       fieldName: 'bar',
-//       fieldValue: 'athing',
-//     }
-//   })
-//   expect(entry).toBe([
-//     {
-//       name: 'fieldName',
-//       stringValue: 'foo'
-//     },
-//     {
-//       name: 'whatever',
-//     },
-//     {
-//       path: ['whatever'],
-//       name: 'fieldName',
-//       stringValue: 'bar',
-//     },
-//     {
-//       path: ['whatever'],
-//       name: 'fieldValue',
-//       stringValue: 'athing',
-//     },
-//
-//   ])
-// })

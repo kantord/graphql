@@ -8,6 +8,10 @@ export function flattenTree(tree) {
 }
 
 export function toTypedKeyValue(value) {
+  if (value === null) return { nullValue: true }
+  if (value === undefined) return { undefinedValue: true }
+  if (typeof value === 'string' && value.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/)) return { dateValue: value }
+
   return {
     string: () => ({ stringValue: value }),
     boolean: () => ({ booleanValue: value }),

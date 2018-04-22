@@ -8,6 +8,7 @@
     "cors": "^2.8.4",
     "dataloader": "^1.4.0",
     "dotenv": "^4.0.0",
+    "elasticsearch": "^14.2.2",
     "express": "^4.15.3",
     "express-graphql": "^0.6.6",
     "gps-distance": "^0.0.4",
@@ -18,7 +19,8 @@
     "json-stable-stringify": "^1.0.1",
     "lodash": "^4.17.4",
     "luxon": "^0.0.17",
-    "node-fetch": "^1.7.1"
+    "node-fetch": "^1.7.1",
+    "uuid": "^3.2.1"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
