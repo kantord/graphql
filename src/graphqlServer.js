@@ -74,17 +74,22 @@ function createGraphqlServer(schema, context) {
       const traceCollector = context._traceCollector;
       if (!traceCollector) return {};
       traceCollector.requestDidEnd();
-      const trace_data = formatTraceData(traceCollector)
+      const trace = formatTraceData(traceCollector)
+      trace.execution.resolvers =
+        trace.execution.resolvers.map(res => Object.assign({}, res, {
+          path: res.path.map(p => p.toString())
+      }))
       try {
         elastic_client.create({
           type: 'query',
-          index: 'asds4d_',
+          index: 's4d_',
           id: uuid(),
           body: {
             'request': {
               'definitions': flattenTree(JSON.parse(JSON.stringify(req.document.definitions))),
               'results': []
-            }
+            },
+            'metrics': trace
           }
         })
         return { };
